@@ -58,7 +58,7 @@ public class flights {
 		driver.findElement(By.xpath(Btn_To)).click();
 		driver.findElement(By.xpath(search_To)).sendKeys(toDest);
 		select_To = select_To.replace("toAirport", toAirport);
-		driver.findElement(By.xpath(select_To)).click();
+		 driver.findElement(By.xpath(select_To)).click();
 	}
 
 }
