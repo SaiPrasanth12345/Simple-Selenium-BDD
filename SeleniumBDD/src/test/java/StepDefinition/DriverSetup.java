@@ -11,11 +11,13 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import setupDriver.flights;
 import setupDriver.login;
 
 public class DriverSetup {
 	public static WebDriver driver;
-	public static login loginPage;	
+	public static login loginPage;
+	public static flights flightsPage;	
 	public static DriverSetup driverSetup = new DriverSetup();
 	public static Scenario scenario;
 
@@ -23,6 +25,7 @@ public class DriverSetup {
 	public void driverSetup() {
 		System.out.println("----->driverSetup");
 		// Not required for above version 14
+		
 		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
 
 		ChromeOptions options = new ChromeOptions();
@@ -31,6 +34,7 @@ public class DriverSetup {
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		loginPage = new login(driver);
+		flightsPage = new flights(driver);
 	}
 
 	// Configuring Scenario
@@ -45,7 +49,7 @@ public class DriverSetup {
 		if (scenario.isFailed()) {
 			attachScreenshot();
 		}
-		driver.quit();
+		//  driver.quit();
 	}
 
 	public byte[] screnshotTake() {

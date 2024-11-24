@@ -18,3 +18,10 @@ Feature: Login Feature
       | username | password |
       | test     | test     |
       | test1    | test2    |
+
+  @test3
+  Scenario: Auomate the MakeMyTrip Website
+    Given Launch MakeMyTrip Website
+    When Select One way Flight
+    And Select the from Destination as "Chennai" from "MAA" Airport
+    And Select the To Destination as "Mumbai" from "BOM" Airport
