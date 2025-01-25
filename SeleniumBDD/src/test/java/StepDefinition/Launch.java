@@ -13,8 +13,8 @@ public class Launch {
 	public login loginPage = DriverSetup.loginPage;
 	DriverSetup driversetup = new DriverSetup();
 
-	public String search = "//input[@title='Search']";
-	public String googleSearch = "//li/following-sibling::div//input[@value='Google Search']";
+	public String search = "//textarea[@title='Search']";
+	public String googleSearch = "//div[@jsname='VlcLAe']//input[@value='Google Search']";
 
 	/*
 	 * @Given("Get selenium driver") public void get_selenium_driver() {

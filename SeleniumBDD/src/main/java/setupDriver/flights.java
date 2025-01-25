@@ -1,10 +1,15 @@
 package setupDriver;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,6 +27,12 @@ public class flights {
 	private String Btn_To = "//label[@for='toCity']/span[.='To']";
 	private String search_To = "//label[@for='toCity']//input[@id='toCity']";
 	private String select_To = "//*[.='toAirport']/ancestor::li";
+	private String travel_date = "//div[contains(@aria-label,'travelDate')]";
+	private String search_btn = "//p[@data-cy='submit']/a[.='Search']";
+	private String flightComparisionPopup = "//div[@class='fliCompCoachmark']//span[.='GOT IT']";
+	private String flightsPageLoaded = "//span[.='Flights from fromDest to toDest']";
+	private String first_flightSelect = "//div[@class=' '][1]//div[contains(@class,'listingCard')]//span[.='VIEW PRICES']";
+	private String bookNowBtn = "//div[contains(@class,'fareFamilyCardWrapper')][1]//button[.='BOOK NOW']"; 
 
 	public flights(WebDriver getdriver) {
 		driver = getdriver;
@@ -58,7 +69,36 @@ public class flights {
 		driver.findElement(By.xpath(Btn_To)).click();
 		driver.findElement(By.xpath(search_To)).sendKeys(toDest);
 		select_To = select_To.replace("toAirport", toAirport);
-		 driver.findElement(By.xpath(select_To)).click();
+		driver.findElement(By.xpath(select_To)).click();
 	}
-
+	
+	public void selectTravelDate(String date) {
+		travel_date = travel_date.replace("travelDate", date);
+		driver.findElement(By.xpath(travel_date)).click();
+	}
+	
+	public void searchFlights(String fromDest, String toDest) {
+		// click on Search
+		driver.findElement(By.xpath(search_btn)).click();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		flightsPageLoaded = flightsPageLoaded.replace("fromDest", fromDest).replace("toDest", toDest);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(flightsPageLoaded)));
+		
+		// Click got it on flights Compare popup
+		WebElement flightCompare = driver.findElement(By.xpath(flightComparisionPopup));
+		if(flightCompare.isDisplayed()) {
+			flightCompare.click();
+		}
+	}
+	
+	public void selectFirstFlight() {
+		// click on first flight
+		driver.findElement(By.xpath(first_flightSelect)).click();
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeClickable (By.xpath(bookNowBtn)));
+		driver.findElement(By.xpath(bookNowBtn)).click();
+	}
 }

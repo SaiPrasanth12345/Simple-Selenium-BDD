@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import setupDriver.flights;
@@ -25,9 +26,7 @@ public class DriverSetup {
 	public void driverSetup() {
 		System.out.println("----->driverSetup");
 		// Not required for above version 14
-		
 		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
-
 		ChromeOptions options = new ChromeOptions();
 		// For chrome 11 version
 		// options.addArguments("--remote-allow-origins=*");
@@ -41,15 +40,23 @@ public class DriverSetup {
 	@Before(order = 1)
 	public void orderExection(Scenario scenario) {
 		this.scenario = scenario;
+		scenario.log("Executing Scenario:"+scenario.getName());
 		System.out.println("----->Before Hook , Order = 1");
 	}
 
 	@After
 	public void TearDown() {
+		scenario.log("Status is "+scenario.getStatus());
 		if (scenario.isFailed()) {
 			attachScreenshot();
 		}
-		//  driver.quit();
+		  driver.quit();
+	}
+	
+	@AfterStep
+	public void afterStep() {
+		scenario.log("Screenshot at the End of Step");
+		attachScreenshot();
 	}
 
 	public byte[] screnshotTake() {
